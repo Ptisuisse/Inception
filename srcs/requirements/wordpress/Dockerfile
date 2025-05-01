@@ -13,9 +13,9 @@ RUN mkdir -p /run/php && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-COPY script.sh /script.sh
+COPY tools/script.sh /script.sh
 
 RUN chmod +x script.sh
 

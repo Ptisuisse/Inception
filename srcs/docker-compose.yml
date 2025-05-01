@@ -6,7 +6,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./web:/var/www/wordpress
+      - /home/lvan-slu/data/wordpress:/var/www/wordpress
     depends_on:
       - wordpress
     networks:
@@ -16,7 +16,7 @@ services:
     build: requirements/wordpress
     container_name: wordpress
     volumes:
-      - ./web:/var/www/wordpress
+      - /home/lvan-slu/data/wordpress:/var/www/wordpress 
     env_file:
       - .env
     depends_on:
@@ -28,15 +28,12 @@ services:
     build: requirements/mariadb
     container_name: mariadb
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - /home/lvan-slu/data/mariadb:/var/lib/mysql
     env_file:
       - .env
     networks:
       - inception
     restart: always
-
-volumes:
-  mariadb_data:
 
 networks:
   inception:
