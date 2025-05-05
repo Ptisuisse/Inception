@@ -1,0 +1,40 @@
+/* Styles généraux pour toute la page */
+body {
+    font-family: sans-serif; /* Utilise une police de caractères simple et lisible */
+    line-height: 1.6; /* Améliore la lisibilité en espaçant les lignes */
+    background-color: #f4f4f4; /* Un fond gris très clair */
+    color: #333; /* Couleur de texte principale (gris foncé) */
+    padding: 20px; /* Ajoute un peu d'espace autour du contenu */
+    margin: 0; /* Supprime la marge par défaut du body */
+}
+
+/* Style pour le titre principal */
+h1 {
+    color: #0056b3; /* Une couleur bleue pour le titre */
+    text-align: center; /* Centre le titre sur la page */
+    margin-bottom: 30px; /* Ajoute de l'espace sous le titre */
+}
+
+/* Style général pour les paragraphes */
+p {
+    margin-bottom: 15px; /* Ajoute de l'espace sous chaque paragraphe */
+}
+
+/* Style spécifique pour le paragraphe qui sera modifié par TypeScript */
+#message {
+    color: #888; /* Couleur grise plus claire initialement */
+    font-style: italic; /* Met le texte en italique au départ */
+    border: 1px dashed #ccc; /* Ajoute une bordure discrète */
+    padding: 10px; /* Espace à l'intérieur de la bordure */
+    background-color: #fff; /* Fond blanc pour ce paragraphe spécifique */
+}
+
+/* (Optionnel) Style pour le paragraphe #message APRES modification par JS (juste pour l'idée) */
+/* Vous pourriez ajouter une classe via JS pour appliquer ce style */
+/*
+.message-updated {
+    color: green;
+    font-weight: bold;
+    font-style: normal;
+}
+*/

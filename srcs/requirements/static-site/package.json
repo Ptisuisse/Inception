@@ -1,0 +1,19 @@
+{
+  "name": "static-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "copy-assets": "cp src/*.html src/*.css dist/",
+    "build:ts": "tsc",
+    "build": "npm run clean && mkdir dist && npm run build:ts && npm run copy-assets"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3"
+  }
+}

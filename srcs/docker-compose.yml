@@ -37,8 +37,37 @@ services:
   redis:
     build: requirements/redis
     container_name: redis
+    env_file: .env
+    networks:
+      - inception
     ports:
       - "6379:6379"
+    volumes:
+      - /home/lvan-slu/data/wordpress:/var/www/wordpress
+    depends_on:
+      - wordpress
+    restart: always
+  ftp:
+    container_name: ftp
+    build: requirements/ftp
+    env_file: .env
+    ports:
+      - "21:21"
+      - "${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
+    volumes:
+      - /home/lvan-slu/data/wordpress:/var/www/wordpress 
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    restart: always
+  static-site:
+    container_name: static-site
+    build: requirements/static-site
+    ports:
+      - "8080"
+    volumes:
+      - /home/lvan-slu42/Documents/Inception/srcs/requirements/static-site/src:/var/www/static-site
     networks:
       - inception
 networks:

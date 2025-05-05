@@ -18,6 +18,7 @@
 
 # Default server configuration
 #
+
 server {
 	listen 80;
 	server_name lvan-slu.42.fr;
@@ -48,6 +49,12 @@ server {
 	location ~ /\.ht {
 	 	deny all;
  	}
+    location ^~ /static-site/ {
+        include /etc/nginx/proxy_params;
+
+        proxy_pass http://static-site:8080/;
+
+    }
 }
 
 

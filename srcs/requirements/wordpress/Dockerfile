@@ -9,7 +9,7 @@ RUN apt install -y php7.4-fpm
 
 RUN apt install -y php7.4-mysqli curl
 
-RUN apt install unzip
+RUN apt install -y php7.4-redis php7.4-curl
 
 RUN mkdir -p /run/php && \
     apt clean && \

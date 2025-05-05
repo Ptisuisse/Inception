@@ -1,14 +1,10 @@
-# Utiliser Debian Bullseye comme image de base
+
 FROM debian:bullseye
 
-# Mettre à jour les paquets et installer Redis
-RUN apt update && \
-    apt install -y redis-server && \
-    apt clean
+RUN apt-get update && apt-get install -y lsb-release curl gpg redis-server
+COPY conf/redis.conf /var/www/redis.conf
+RUN mv /var/www/redis.conf /etc/redis/redis.conf
 
-# Exposer le port 6379 pour Redis
 EXPOSE 6379
 
-# Commande par défaut pour démarrer Redis
 CMD ["redis-server", "/etc/redis/redis.conf"]
-
