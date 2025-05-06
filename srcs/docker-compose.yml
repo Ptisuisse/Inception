@@ -78,10 +78,10 @@ services:
       - inception
     depends_on:
       - mariadb
-    # ports:
-    #   - "9000:9000"
+    ports:
+      - "9000"
     volumes:
-      - /home/lvan-slu/data/mariadb:/var/lib/mysql
+      - /home/lvan-slu/data/mariadb:/var/lib/html
 networks:
   inception:
     driver : bridge

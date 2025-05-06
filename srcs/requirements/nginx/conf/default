@@ -42,44 +42,28 @@ server {
  		try_files $uri $uri/ =404;
  	}
 
- 	location ~ \.php$ {
-    		include snippets/fastcgi-php.conf;
-    		fastcgi_pass wordpress:9000;
-	}
 	location ~ /\.ht {
 	 	deny all;
  	}
     location ^~ /static/ {
         include /etc/nginx/proxy_params;
-
         proxy_pass http://static-site:8080/;
-
     }
 	location = /favicon.ico {
-    # Optionnel: pour ne pas enregistrer les erreurs 404 si le favicon est parfois manquant
-    log_not_found off;
-    # Optionnel: pour ne pas enregistrer les accès au favicon
-    access_log off;
-
-    proxy_pass http://static-site:8080/favicon.ico;
-    include /etc/nginx/proxy_params;
+    	log_not_found off;
+    	access_log off;
+    	proxy_pass http://static-site:8080/favicon.ico;
+    	include /etc/nginx/proxy_params;
 	}
-	location /adminer/ {
-        # alias /var/www/html/; # Le chemin où Adminer (index.php) se trouve DANS LE CONTENEUR ADMINER
-                                # Pour PHP-FPM, SCRIPT_FILENAME est plus important
-
-        try_files $uri $uri/ /adminer/index.php?$args; # Tente de trouver index.php dans ce chemin
-
-        location ~ ^/adminer/(.+\.php)$ {
-            # fastcgi_split_path_info ^(.+\.php)(/.+)$; # Peut être nécessaire ou non
-            fastcgi_pass adminer:9000; # Pointe vers votre service PHP-FPM d'Adminer
-            fastcgi_index index.php;
-            include fastcgi_params;
-            # Le SCRIPT_FILENAME doit pointer vers l'emplacement d'Adminer DANS LE CONTENEUR ADMINER
-            # Dans votre Dockerfile Adminer, vous avez mis index.php dans /var/www/html/
-            fastcgi_param SCRIPT_FILENAME /var/www/html/$1; # $1 capture ce qui correspond à (.+\.php)
-            # fastcgi_param PATH_INFO $fastcgi_path_info; # Peut être nécessaire
-        }
+    location ~ ^/adminer(/.*$|$) {
+        fastcgi_index index.php;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME /var/www/html/index.php;
+        fastcgi_pass adminer:9000;
+	}
+ 	location ~ \.php$ {
+    		include snippets/fastcgi-php.conf;
+    		fastcgi_pass wordpress:9000;
 	}
 }
 
