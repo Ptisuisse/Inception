@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 15s
+  
+scrape_configs:
+  # Job pour scraper Prometheus lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090'] # Prometheus écoute sur le port 9090
+
+  # Job pour scraper Nginx via HTTPS
+  # !!! IMPORTANT !!!
+  # Nginx DOIT être configuré pour exposer des métriques au format Prometheus
+  # sur un chemin accessible via HTTPS (par exemple, /metrics).
+  # - job_name: 'nginx'  # Temporarily commented out
+  #   metrics_path: /metrics
+  #   scheme: https
+  #   static_configs:
+  #     - targets: ['nginx:443']
+  #   tls_config:
+  #     insecure_skip_verify: true

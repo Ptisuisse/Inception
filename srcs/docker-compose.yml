@@ -81,7 +81,42 @@ services:
     ports:
       - "9000"
     volumes:
-      - /home/lvan-slu/data/mariadb:/var/lib/html
-networks:
-  inception:
-    driver : bridge
+      - /home/lvan-slu/data/mariadb:/var/www/html
+
+  prometheus:
+    build: requirements/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - './prometheus'
+      - '--config.file=/etc/prometheus/prometheus.yml' # Corrected path
+      - '--web.external-url=https://lvan-slu.42.fr/prometheus/'
+      - '--web.route-prefix=/' # Nginx handles the /prometheus/ prefix, Prometheus serves from root
+      - '--web.enable-lifecycle' # Allows for configuration reload via API
+    networks:
+      - inception
+    volumes:
+      - ./requirements/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - inception
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./requirements/grafana/grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      - GF_SERVER_ROOT_URL=https://lvan-slu.42.fr/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_LOG_LEVEL=debug
+    restart: unless-stopped
+  
+inception:
+  driver : bridge
+volumes:
+  grafana-storage:
