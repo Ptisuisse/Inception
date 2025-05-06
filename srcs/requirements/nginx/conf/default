@@ -64,6 +64,23 @@ server {
     proxy_pass http://static-site:8080/favicon.ico;
     include /etc/nginx/proxy_params;
 	}
+	location /adminer/ {
+        # alias /var/www/html/; # Le chemin où Adminer (index.php) se trouve DANS LE CONTENEUR ADMINER
+                                # Pour PHP-FPM, SCRIPT_FILENAME est plus important
+
+        try_files $uri $uri/ /adminer/index.php?$args; # Tente de trouver index.php dans ce chemin
+
+        location ~ ^/adminer/(.+\.php)$ {
+            # fastcgi_split_path_info ^(.+\.php)(/.+)$; # Peut être nécessaire ou non
+            fastcgi_pass adminer:9000; # Pointe vers votre service PHP-FPM d'Adminer
+            fastcgi_index index.php;
+            include fastcgi_params;
+            # Le SCRIPT_FILENAME doit pointer vers l'emplacement d'Adminer DANS LE CONTENEUR ADMINER
+            # Dans votre Dockerfile Adminer, vous avez mis index.php dans /var/www/html/
+            fastcgi_param SCRIPT_FILENAME /var/www/html/$1; # $1 capture ce qui correspond à (.+\.php)
+            # fastcgi_param PATH_INFO $fastcgi_path_info; # Peut être nécessaire
+        }
+	}
 }
 
 
