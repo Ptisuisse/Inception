@@ -1,40 +1,62 @@
-/* Styles généraux pour toute la page */
 body {
-    font-family: sans-serif; /* Utilise une police de caractères simple et lisible */
-    line-height: 1.6; /* Améliore la lisibilité en espaçant les lignes */
-    background-color: #f4f4f4; /* Un fond gris très clair */
-    color: #333; /* Couleur de texte principale (gris foncé) */
-    padding: 20px; /* Ajoute un peu d'espace autour du contenu */
-    margin: 0; /* Supprime la marge par défaut du body */
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 2rem;
 }
 
-/* Style pour le titre principal */
 h1 {
-    color: #0056b3; /* Une couleur bleue pour le titre */
-    text-align: center; /* Centre le titre sur la page */
-    margin-bottom: 30px; /* Ajoute de l'espace sous le titre */
+  text-align: center;
 }
 
-/* Style général pour les paragraphes */
-p {
-    margin-bottom: 15px; /* Ajoute de l'espace sous chaque paragraphe */
+.module {
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-width: 800px;
+  background-color: white;
 }
 
-/* Style spécifique pour le paragraphe qui sera modifié par TypeScript */
-#message {
-    color: #888; /* Couleur grise plus claire initialement */
-    font-style: italic; /* Met le texte en italique au départ */
-    border: 1px dashed #ccc; /* Ajoute une bordure discrète */
-    padding: 10px; /* Espace à l'intérieur de la bordure */
-    background-color: #fff; /* Fond blanc pour ce paragraphe spécifique */
+.module-comparaison {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
 
-/* (Optionnel) Style pour le paragraphe #message APRES modification par JS (juste pour l'idée) */
-/* Vous pourriez ajouter une classe via JS pour appliquer ce style */
-/*
-.message-updated {
-    color: green;
-    font-weight: bold;
-    font-style: normal;
+.css-side, .ts-side {
+  flex: 1;
+  border: 1px dashed #aaa;
+  padding: 1rem;
 }
-*/
+
+button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.box {
+  width: 50px;
+  height: 50px;
+  background-color: tomato;
+  margin-top: 10px;
+}
+
+/* CSS Animation */
+.css-box {
+  animation: move 2s infinite alternate;
+}
+
+@keyframes move {
+  from { transform: translateX(0); }
+  to { transform: translateX(100px); }
+}

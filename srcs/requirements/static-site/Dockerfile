@@ -8,6 +8,4 @@ RUN apt-get update && \
 
 RUN npm install -g http-server --no-update-notifier --no-fund
 
-COPY src/ static-site/
-
 CMD ["http-server", "-p", "8080", "-d", "/var/www/static-site"]

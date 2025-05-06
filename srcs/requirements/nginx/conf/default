@@ -49,12 +49,21 @@ server {
 	location ~ /\.ht {
 	 	deny all;
  	}
-    location ^~ /static-site/ {
+    location ^~ /static/ {
         include /etc/nginx/proxy_params;
 
         proxy_pass http://static-site:8080/;
 
     }
+	location = /favicon.ico {
+    # Optionnel: pour ne pas enregistrer les erreurs 404 si le favicon est parfois manquant
+    log_not_found off;
+    # Optionnel: pour ne pas enregistrer les accès au favicon
+    access_log off;
+
+    proxy_pass http://static-site:8080/favicon.ico;
+    include /etc/nginx/proxy_params;
+	}
 }
 
 

@@ -67,9 +67,21 @@ services:
     ports:
       - "8080"
     volumes:
-      - /home/lvan-slu42/Documents/Inception/srcs/requirements/static-site/src:/var/www/static-site
+      - /home/lvan-slu42/Documents/Inception/srcs/requirements/static-site/dist:/var/www/static-site
     networks:
       - inception
+  adminer:
+    container_name: adminer
+    build: requirements/adminer
+    restart: always
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    # ports:
+    #   - "9000:9000"
+    volumes:
+      - /home/lvan-slu/data/mariadb:/var/lib/mysql
 networks:
   inception:
     driver : bridge

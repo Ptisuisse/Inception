@@ -1,6 +1,11 @@
-const button = document.getElementById("changerTexte") as HTMLButtonElement;
-const paragraph = document.getElementById("text") as HTMLParagraphElement;
+import { initTextChange } from './modules/texte.js';
+import { initCompteur } from './modules/compteur.js';
+import { initFormulaire } from './modules/formulaire.js';
+import { initAnimation } from './modules/animation.js';
 
-button.addEventListener("click", () => {
-  paragraph.textContent = "Le texte a été changé grâce à TypeScript !";
+document.addEventListener("DOMContentLoaded", () => {
+  initTextChange();
+  initCompteur();
+  initFormulaire();
+  initAnimation();
 });
