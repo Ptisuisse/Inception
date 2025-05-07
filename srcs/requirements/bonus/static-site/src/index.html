@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Comparaison CSS vs TypeScript</title>
+</head>
+<body>
+  <h1>Comparaison CSS vs TypeScript</h1>
+
+  <section class="module">
+    <h2>1. Changer du texte</h2>
+    <div class="module-comparaison">
+      <div class="css-side">
+        <p><em>(CSS ne peut pas changer dynamiquement du texte)</em></p>
+      </div>
+      <div class="ts-side">
+        <p id="text-ts">Texte d’origine</p>
+        <button id="changerTexte">Changer le texte</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="module">
+    <h2>2. Compteur</h2>
+    <div class="module-comparaison">
+      <div class="css-side">
+        <p><em>Impossible avec CSS</em></p>
+      </div>
+      <div class="ts-side">
+        <p>Compteur : <span id="compteur">0</span></p>
+        <button id="incremente">+1</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="module">
+    <h2>3. Validation de formulaire</h2>
+    <div class="module-comparaison">
+      <div class="css-side">
+        <form>
+          <input type="email" required placeholder="Email valide" />
+          <input type="submit" value="Envoyer" />
+        </form>
+      </div>
+      <div class="ts-side">
+        <form id="form-ts">
+          <input type="text" id="email-ts" placeholder="Entrer un email" />
+          <span id="validation-message"></span><br />
+          <button id="envoyer-ts" disabled>Envoyer</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="module">
+    <h2>4. Animation</h2>
+    <div class="module-comparaison">
+      <div class="css-side">
+        <div class="box css-box"></div>
+      </div>
+      <div class="ts-side">
+        <div class="box ts-box" id="ts-box"></div>
+        <button id="animer-box">Animer</button>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

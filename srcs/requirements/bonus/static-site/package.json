@@ -1,0 +1,11 @@
+{
+  "name": "static-site",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc && cp src/*.html dist/ && cp src/*.css dist/ && cp src/favicon.ico dist/",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

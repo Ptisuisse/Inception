@@ -35,7 +35,7 @@ services:
       - inception
     restart: always
   redis:
-    build: requirements/redis
+    build: requirements/bonus/redis
     container_name: redis
     env_file: .env
     networks:
@@ -49,7 +49,7 @@ services:
     restart: always
   ftp:
     container_name: ftp
-    build: requirements/ftp
+    build: requirements/bonus/ftp
     env_file: .env
     ports:
       - "21:21"
@@ -63,16 +63,16 @@ services:
     restart: always
   static-site:
     container_name: static-site
-    build: requirements/static-site
+    build: requirements/bonus/static-site
     ports:
       - "8080"
     volumes:
-      - /home/lvan-slu42/Documents/Inception/srcs/requirements/static-site/dist:/var/www/static-site
+      - /home/lvan-slu42/Documents/Inception/srcs/requirements/bonus/static-site/dist:/var/www/static-site
     networks:
       - inception
   adminer:
     container_name: adminer
-    build: requirements/adminer
+    build: requirements/bonus/adminer
     restart: always
     networks:
       - inception
@@ -80,43 +80,19 @@ services:
       - mariadb
     ports:
       - "9000"
-    volumes:
-      - /home/lvan-slu/data/mariadb:/var/www/html
-
-  prometheus:
-    build: requirements/prometheus
-    container_name: prometheus
+  portainer:
+    build: requirements/bonus/portainer/.
+    container_name: portainer
     ports:
-      - "9090:9090"
-    command:
-      - './prometheus'
-      - '--config.file=/etc/prometheus/prometheus.yml' # Corrected path
-      - '--web.external-url=https://lvan-slu.42.fr/prometheus/'
-      - '--web.route-prefix=/' # Nginx handles the /prometheus/ prefix, Prometheus serves from root
-      - '--web.enable-lifecycle' # Allows for configuration reload via API
-    networks:
-      - inception
+      - "8000:8000"
+      - "9443:9443"
     volumes:
-      - ./requirements/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    depends_on:
-      - prometheus
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     networks:
-      - inception
-    volumes:
-      - grafana-storage:/var/lib/grafana
-      - ./requirements/grafana/grafana.ini:/etc/grafana/grafana.ini
-    environment:
-      - GF_SERVER_ROOT_URL=https://lvan-slu.42.fr/grafana/
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
-      - GF_LOG_LEVEL=debug
-    restart: unless-stopped
-  
-inception:
-  driver : bridge
+      inception:
+networks:  
+  inception:
+    driver : bridge
 volumes:
-  grafana-storage:
+  portainer_data:

@@ -1,0 +1,15 @@
+FROM debian:bullseye
+
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y php7.4 curl wget php7.4-fpm php-mysql mariadb-client php-curl
+
+RUN mkdir -p /var/www/html && \
+    wget -O /var/www/html/index.php https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1-en.php
+
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+
+RUN mkdir -p /run/php && chown www-data:www-data /run/php
+
+EXPOSE 9000
+
+CMD ["php-fpm7.4", "-F"]
