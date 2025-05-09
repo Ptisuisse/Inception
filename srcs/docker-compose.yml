@@ -3,10 +3,9 @@ services:
     build: ./requirements/nginx
     container_name: nginx
     ports:
-      - "80:80"
       - "443:443"
     volumes:
-      - /home/lvan-slu/data/wordpress:/var/www/wordpress
+      - wordpress:/var/www/wordpress
     depends_on:
       - wordpress
     networks:
@@ -16,7 +15,7 @@ services:
     build: requirements/wordpress
     container_name: wordpress
     volumes:
-      - /home/lvan-slu/data/wordpress:/var/www/wordpress 
+      - wordpress:/var/www/wordpress
     env_file:
       - .env
     depends_on:
@@ -28,7 +27,7 @@ services:
     build: requirements/mariadb
     container_name: mariadb
     volumes:
-      - /home/lvan-slu/data/mariadb:/var/lib/mysql
+      - database:/var/lib/mysql
     env_file:
       - .env
     networks:
@@ -43,7 +42,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - /home/lvan-slu/data/wordpress:/var/www/wordpress
+      - wordpress:/var/www/wordpress
     depends_on:
       - wordpress
     restart: always
@@ -55,7 +54,7 @@ services:
       - "21:21"
       - "${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
     volumes:
-      - /home/lvan-slu/data/wordpress:/var/www/wordpress 
+      - wordpress:/var/www/wordpress
     networks:
       - inception
     depends_on:
@@ -84,15 +83,27 @@ services:
     build: requirements/bonus/portainer/.
     container_name: portainer
     ports:
-      - "8000:8000"
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
       inception:
+    restart: always
 networks:  
   inception:
     driver : bridge
 volumes:
   portainer_data:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/lvan-slu/data/mariadb
+      o: bind
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/lvan-slu/data/wordpress
+      o: bind
