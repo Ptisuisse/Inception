@@ -6,9 +6,8 @@ else
     echo "Initialisation de MariaDB..."
     mysql_install_db --user=mysql --ldata=/var/lib/mysql
 
-    # Démarrer MariaDB temporairement en arrière-plan
     mysqld_safe --skip-networking &
-    sleep 5  # attendre que MariaDB démarre
+    sleep 5
 
     echo "Création de la base de données et de l'utilisateur..."
 
@@ -19,9 +18,7 @@ GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-    # Arrêter le serveur temporaire
     mysqladmin -u root shutdown
 fi
 
-# Lancer MariaDB normalement
 exec mysqld

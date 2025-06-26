@@ -24,7 +24,7 @@ server {
 	location ~ /\.ht {
 	 	deny all;
  	}
-    location ^~ /static/ {
+    location ^~ /static-site/ {
         include /etc/nginx/proxy_params;
         proxy_pass http://static-site:8080/;
     }

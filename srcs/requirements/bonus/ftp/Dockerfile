@@ -1,9 +1,9 @@
-
 FROM debian:bullseye
 
 RUN apt-get update && \
     apt-get install -y vsftpd procps passwd
 
+RUN groupadd -g 33 www-data || true
 
 RUN mkdir -p /var/run/vsftpd/empty && \
     chown ftp:ftp /var/run/vsftpd/empty && \

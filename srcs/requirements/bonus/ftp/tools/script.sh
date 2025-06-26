@@ -1,50 +1,51 @@
 #!/bin/bash
 
+# Check for required environment variables
 required_vars=("FTP_USER_NAME" "FTP_USER_PASS")
 for var in "${required_vars[@]}"; do
     if [ -z "${!var}" ]; then
-        echo "ERREUR: Variable d'environnement requise manquante : $var"
+        echo "ERROR: Required environment variable is missing: $var"
         exit 1
     fi
 done
 
+# Create the user if it doesn't exist, set home directory, and add to www-data group
 if ! id "$FTP_USER_NAME" &>/dev/null; then
-    useradd -m "$FTP_USER_NAME"
+    useradd -m -d /var/www/wordpress -G www-data "$FTP_USER_NAME"
     if [ $? -ne 0 ]; then
-        echo "ERREUR: Échec de la création de l'utilisateur $FTP_USER_NAME."
+        echo "ERROR: Failed to create user $FTP_USER_NAME."
         exit 1
     fi
 else
-    echo "L'utilisateur $FTP_USER_NAME existe déjà."
+    echo "User $FTP_USER_NAME already exists."
 fi
 
+# Set the user's password
 echo "$FTP_USER_NAME:$FTP_USER_PASS" | chpasswd
 if [ $? -ne 0 ]; then
-    echo "ERREUR: Échec de la définition du mot de passe pour $FTP_USER_NAME."
+    echo "ERROR: Failed to set password for $FTP_USER_NAME."
     exit 1
 fi
 
+# Add the user to the vsftpd user list to allow login
 > /etc/vsftpd.userlist
 echo "$FTP_USER_NAME" >> /etc/vsftpd.userlist
 if [ $? -ne 0 ]; then
-    echo "ERREUR: Échec de l'écriture dans /etc/vsftpd.userlist."
+    echo "ERROR: Failed to write to /etc/vsftpd.userlist."
     exit 1
 fi
-echo "Contenu de /etc/vsftpd.userlist :"
+echo "Contents of /etc/vsftpd.userlist:"
 cat /etc/vsftpd.userlist
 
-usermod -d /var/www/wordpress "$FTP_USER_NAME"
-if [ $? -ne 0 ]; then
-    echo "AVERTISSEMENT: Échec de la définition du répertoire racine pour $FTP_USER_NAME (usermod -d). Vérifiez les logs précédents."
-fi
-
+# Check for the vsftpd secure chroot directory
 if [ ! -d "/var/run/vsftpd/empty" ]; then
-    echo "ERREUR FATALE: Le répertoire /var/run/vsftpd/empty est manquant!"
+    echo "FATAL ERROR: Directory /var/run/vsftpd/empty is missing!"
     exit 1
 else
-    echo "Répertoire /var/run/vsftpd/empty trouvé."
+    echo "Directory /var/run/vsftpd/empty found."
 fi
 
-echo "--- Démarrage de vsftpd ---"
+echo "--- Starting vsftpd ---"
 
+# Start the vsftpd server in the foreground
 exec /usr/sbin/vsftpd /etc/vsftpd.conf

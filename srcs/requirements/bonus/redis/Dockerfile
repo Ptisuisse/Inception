@@ -1,4 +1,3 @@
-
 FROM debian:bullseye
 
 RUN apt-get update && apt-get install -y lsb-release curl gpg redis-server
